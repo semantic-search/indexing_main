@@ -1,0 +1,5 @@
+pypdf2
+azure-storage-blob
+mongoengine
+pymongo
+python-dotenv
