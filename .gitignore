@@ -212,7 +212,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+../.env
 .venv
 env/
 venv/
@@ -229,7 +229,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+.env
 # mypy
 .mypy_cache/
 .dmypy.json
