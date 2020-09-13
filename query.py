@@ -1,11 +1,11 @@
 # downloads image from mongo db
-from mongo_setup import global_init
-from models.cache_model import Cache
-from models.file_model import *
+from db_models.mongo_setup import global_init
+from db_models.models.cache_model import Cache
+
 
 global_init()
 
-test = Cache.objects.get(pk="5f4753624bb125ff64aed716")
+test = Cache.objects.get(pk="5f539d8dd9e279c786ec9a8a")
 file = "budlite.jpg"
 print(test.mime_type)
 """For downloading single image or audio"""
@@ -16,5 +16,5 @@ with open(file, 'wb') as file_to_save:
 # for image in test.files:
 #     file = str(i) + ".jpg"
 #     with open(file, 'wb') as file_to_save:
-#         file_to_save.write(image.files.read())
+#         file_to_save.write(image.file.read())
 #     i = i +1

@@ -1,15 +1,17 @@
 # Use to add a single image or audio to db
-from mongo_setup import global_init
-from models.cache_model import Cache
+from db_models.mongo_setup import global_init
+from db_models.models.cache_model import Cache
 
-global_init()
-
-cache_model_obj = Cache()
 
 if __name__ == '__main__':
+    global_init()
+
+    cache_model_obj = Cache()
+
     """for image files"""
     cache_model_obj.file_name = 'budlite.jpg'
     cache_model_obj.mime_type = "jpg"
+    cache_model_obj.is_doc_type = False
     with open('test_files/image1.jpg', 'rb') as fd:
         cache_model_obj.file.put(fd)
     cache_model_obj.save()

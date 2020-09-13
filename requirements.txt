@@ -3,3 +3,5 @@ azure-storage-blob
 mongoengine
 pymongo
 python-dotenv
+cairosvg
+magic
