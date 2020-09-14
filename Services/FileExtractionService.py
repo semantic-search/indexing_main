@@ -6,6 +6,9 @@ import os
 import re
 from pathlib import Path
 import chardet
+import shutil
+from zipfile import ZipFile
+
 
 class FileExtract:
     def extract_text_docs(self, file):
@@ -19,15 +22,47 @@ class FileExtract:
         return text
 
 
-    def extract_images_docs(self, file):
-        pass
+    def extractor(self, starts_with, file):
+        new_directory = "Services/images/" + str(uuid.uuid4())
+        # unique folder created
+        os.mkdir(new_directory)
+        new_file = new_directory + "/" + str(file)
+        shutil.copy2(file, new_file)
+        # copy this file to this directory
+        archive = ZipFile(new_file)
+        images_array = []
+        for image_file in archive.namelist():
+            if image_file.startswith(starts_with):
+                print(image_file)
+                image = archive.extract(member=image_file, path=new_directory)
+                images_array.append(image)
+        os.remove(new_file)
+        return images_array
+
+
+    def extract_images_docs(self, file, extension):
+        if extension == 'pptx':
+            startswith = 'ppt/media'
+            images_list = self.extractor(file=file, starts_with=startswith)
+            return images_list
+        elif extension == 'xlsx':
+            startswith = 'xl/media'
+            images_list = self.extractor(file=file, starts_with=startswith)
+            return images_list
+        elif extension == 'docx':
+            startswith = 'word/media'
+            images_list = self.extractor(file=file, starts_with=startswith)
+            return images_list
 
 
     def extract_images_epub(self, file):
-        pass
+        images_list = self.extractor(file=file, starts_with='EPUB/images')
+        return images_list
+
 
     def extract_images_odt(self, file):
-        pass
+        images_list = self.extractor(file=file, starts_with='Pictures')
+        return images_list
 
 
     def extract_text_pdf(self, file):
@@ -65,6 +100,3 @@ class FileExtract:
             "images_folder": image_folder
         }
         return final_response
-
-
-
