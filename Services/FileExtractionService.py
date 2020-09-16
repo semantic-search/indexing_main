@@ -8,6 +8,7 @@ from pathlib import Path
 import chardet
 import shutil
 from zipfile import ZipFile
+import glob
 
 
 class FileExtract:
@@ -94,7 +95,13 @@ class FileExtract:
         """TODO: remove rest files"""
         images_list = []
         for image in images:
-            images_list.append(image_folder+str(image))
+            images_list.append(image_folder + str(image))
+        for file in glob.glob(image_folder + '*.*'):
+            if file not in images_list:
+                print(file)
+                os.remove(file)
+
+
         final_response = {
             "images": images_list,
             "images_folder": image_folder

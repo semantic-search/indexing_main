@@ -8,28 +8,37 @@ class FileCheck:
     def check_mime_type(self, file):
         file_extension = None
         mime_type = magic.from_file(file, mime=True)
-        for key, val in globals.MIME_TYPES_DOCUMENTS:
+        for key, val in globals.MIME_TYPES_DOCUMENTS.items():
             if str(mime_type) == val:
                 file_extension = key
+                group = "document"
                 break
-        for key, val in globals.MIME_TYPES_LEGACY_DOCUMENTS:
+        for key, val in globals.MIME_TYPES_LEGACY_DOCUMENTS.items():
             if str(mime_type) == val:
                 file_extension = key
+                group = "legacy_document"
                 break
-        for key, val in globals.MIME_TYPES_AUDIO:
+        for key, val in globals.MIME_TYPES_AUDIO.items():
             if str(mime_type) == val:
                 file_extension = key
+                group = "audio"
                 break
-        for key, val in globals.MIME_TYPES_IMAGES:
+        for key, val in globals.MIME_TYPES_IMAGES.items():
             if str(mime_type) == val:
                 file_extension = key
+                group = "image"
                 break
-        for key, val in globals.MIME_TYPES_VIDEO:
+        for key, val in globals.MIME_TYPES_VIDEO.items():
             if str(mime_type) == val:
                 file_extension = key
+                group = "video"
                 break
         if file_extension:
-            return file_extension
+            mime_dict = {
+                "extension": file_extension,
+                "group": group
+            }
+            return mime_dict
         else:
             return None
 
@@ -49,6 +58,8 @@ class FileCheck:
         video_data = video_data.decode("utf8")
 
         if len(video_data) == 0:
-            return True
-        else:
+            """No audio"""
             return False
+        else:
+            """Audio"""
+            return True
