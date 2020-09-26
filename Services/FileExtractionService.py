@@ -11,6 +11,7 @@ from zipfile import ZipFile
 import glob
 
 
+
 class FileExtract:
     def extract_text_docs(self, file):
         text = textract.process(file)
@@ -21,50 +22,6 @@ class FileExtract:
         text = re.sub(' +', ' ', text)
     # Removes extra white spaces
         return text
-
-
-    def extractor(self, starts_with, file):
-        new_directory = "Services/images/" + str(uuid.uuid4())
-        # unique folder created
-        os.mkdir(new_directory)
-        new_file = new_directory + "/" + str(file)
-        shutil.copy2(file, new_file)
-        # copy this file to this directory
-        archive = ZipFile(new_file)
-        images_array = []
-        for image_file in archive.namelist():
-            if image_file.startswith(starts_with):
-                print(image_file)
-                image = archive.extract(member=image_file, path=new_directory)
-                images_array.append(image)
-        os.remove(new_file)
-        return images_array
-
-
-    def extract_images_docs(self, file, extension):
-        if extension == 'pptx':
-            startswith = 'ppt/media'
-            images_list = self.extractor(file=file, starts_with=startswith)
-            return images_list
-        elif extension == 'xlsx':
-            startswith = 'xl/media'
-            images_list = self.extractor(file=file, starts_with=startswith)
-            return images_list
-        elif extension == 'docx':
-            startswith = 'word/media'
-            images_list = self.extractor(file=file, starts_with=startswith)
-            return images_list
-
-
-    def extract_images_epub(self, file):
-        images_list = self.extractor(file=file, starts_with='EPUB/images')
-        return images_list
-
-
-    def extract_images_odt(self, file):
-        images_list = self.extractor(file=file, starts_with='Pictures')
-        return images_list
-
 
     def extract_text_pdf(self, file):
         text_file = "Services/text_files/" + str(uuid.uuid4()) + ".txt"
@@ -84,6 +41,51 @@ class FileExtract:
         return text
 
 
+    def extractor(self, starts_with, file, file_name):
+        new_directory = "Services/images/" + str(uuid.uuid4())
+        # unique folder created
+        os.mkdir(new_directory)
+        new_file = new_directory + "/" + file_name
+        shutil.copy2(file, new_file)
+        # copy this file to this directory
+        archive = ZipFile(new_file)
+        images_list = []
+        for image_file in archive.namelist():
+            if image_file.startswith(starts_with):
+                print(image_file)
+                image = archive.extract(member=image_file, path=new_directory)
+                images_list.append(image)
+        os.remove(new_file)
+        final_response = {
+            "images": images_list,
+            "images_folder": new_directory
+        }
+        return final_response
+
+
+    def extract_images_docs(self, file, extension, file_name):
+        if extension == 'pptx':
+            startswith = 'ppt/media'
+            images_response = self.extractor(file=file, starts_with=startswith, file_name=file_name)
+            return images_response
+        elif extension == 'xlsx':
+            startswith = 'xl/media'
+            images_response = self.extractor(file=file, starts_with=startswith, file_name=file_name)
+            return images_response
+        elif extension == 'docx':
+            startswith = 'word/media'
+            images_response = self.extractor(file=file, starts_with=startswith, file_name=file_name)
+            return images_response
+        elif extension == "epub":
+            starts_with = 'EPUB/images'
+            images_response = self.extractor(file=file, starts_with=starts_with, file_name=file_name)
+            return images_response
+        elif extension == "odt":
+            starts_with = 'Pictures'
+            images_response = self.extractor(file=file, starts_with=starts_with, file_name=file_name)
+            return images_response
+
+
     def extract_images_pdf(self, file):
         image_folder = "Services/images/" + str(uuid.uuid4()) + "/"
         os.mkdir(image_folder)
@@ -92,7 +94,6 @@ class FileExtract:
         subprocess.call(["./Services/pdfimages", "-j", file, image_folder])
         for path in Path(image_folder).rglob('*.jpg'):
             images.append(path.name)
-        """TODO: remove rest files"""
         images_list = []
         for image in images:
             images_list.append(image_folder + str(image))

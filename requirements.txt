@@ -4,4 +4,7 @@ mongoengine
 pymongo
 python-dotenv
 cairosvg
-magic
+python-magic
+kafka-python
+redis
+textract

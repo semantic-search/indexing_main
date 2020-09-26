@@ -17,8 +17,10 @@ DB = os.getenv('MONGO_DB')
 PORT = os.getenv('MONGO_PORT')
 MONGO_USER = os.getenv('MONGO_USER')
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
-CONNECTION_STRING=os.getenv('CONNECTION_STRING')
-
+CONNECTION_STRING = os.getenv('CONNECTION_STRING')
+AZURE_STORAGE_CONTAINER = os.getenv('AZURE_STORAGE_CONTAINER')
+REDIS_DB = '0'
+UNOCONV_SERVER = 'http://localhost:80/unoconv/'
 MIME_TYPES_DOCUMENTS = {
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
