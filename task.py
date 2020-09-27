@@ -55,9 +55,8 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
 
 
 def send_to_topic(topic, value):
-    future = init.producer_obj.send(topic, value=str(value))
-    result = future.get(timeout=60)
-    print(result)
+    init.producer_obj.send(topic, value=str(value))
+    result = init.producer_obj.flush()
 
 
 def send_to_kafka_topics(group, pk):
