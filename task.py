@@ -59,41 +59,50 @@ def send_to_kafka_topics(group, pk):
     if group == "image" or group == "document":
         if globals.image_captioning_containers is not None:
             for container in globals.image_captioning_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
 
         if globals.ocr_containers is not None:
             for container in globals.ocr_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.object_detection_containers is not None:
             for container in globals.object_detection_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.scene_recognition_containers is not None:
             for container in globals.scene_recognition_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.image_recognition_containers is not None:
             for container in globals.image_recognition_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.image_search_containers is not None:
             for container in globals.image_search_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
 
     elif group == "audio" or group == "video":
         if globals.sound_classification_containers is not None:
             for container in globals.sound_classification_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.audio_fingerprinting_containers is not None:
             for container in globals.audio_fingerprinting_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
         if globals.speech_to_text_containers is not None:
             for container in globals.speech_to_text_containers:
+                print(container)
                 future = init.producer_obj.send(container, value=str(pk))
                 future.get(timeout=60)
 
@@ -169,7 +178,8 @@ def main(file):
             shutil.rmtree(new_directory)
             image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                extension="wav",
-                                               file_name=file
+                                               file_name=file,
+                                               group=group
                                                )
         elif group == "image":
             if extension == "jpg" or extension == "png":
