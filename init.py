@@ -1,13 +1,10 @@
 import redis
-from kafka import KafkaProducer
 import globals
-import json
 from azure.storage.blob import BlobServiceClient
-from db_models.models.cache_model import Cache
 from Services.FileConversionService import FileConvert
 from Services.FileExtractionService import FileExtract
 from Services.FileCheckService import FileCheck
-from kafka.admin import KafkaAdminClient
+
 
 
 # Redis initialize
@@ -18,23 +15,8 @@ redis_obj = redis.StrictRedis(
     ssl=True
 )
 
-# Kafka initialize
-admin_client = KafkaAdminClient(
-    bootstrap_servers=[globals.KAFKA_HOSTNAME + ':' + globals.KAFKA_PORT],
-    client_id=globals.KAFKA_CLIENT_ID,
-    security_protocol="SASL_PLAINTEXT",
-    sasl_mechanism='PLAIN',
-    sasl_plain_username=globals.KAFKA_USERNAME,
-    sasl_plain_password=globals.KAFKA_PASSWORD
-)
-producer_obj = KafkaProducer(
-    bootstrap_servers=[globals.KAFKA_HOSTNAME + ':' + globals.KAFKA_PORT],
-    value_serializer=lambda x: json.dumps(x).encode("utf-8"),
-    security_protocol="SASL_PLAINTEXT",
-    sasl_mechanism='PLAIN',
-    sasl_plain_username=globals.KAFKA_USERNAME,
-    sasl_plain_password=globals.KAFKA_PASSWORD
-)
+
+
 # azure blob storage client
 blob_service_client = BlobServiceClient.from_connection_string(globals.CONNECTION_STRING)
 # file services object

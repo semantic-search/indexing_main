@@ -8,6 +8,8 @@ from db_models.models.cache_model import Cache
 import shutil
 from pathlib import Path
 from task_worker.celery import celery_app
+import subprocess
+
 
 image_tasks = list()
 audio_task = list()
@@ -30,30 +32,42 @@ def parse(config_dict):
         if key == "Image":
             for key1, val1 in val.items():
                 if key1 == "Image_Captioning":
+                    global image_captioning_containers
                     image_captioning_containers = val1
                 elif key1 == "Ocr":
+                    global ocr_containers
                     ocr_containers = val1
                 elif key1 == "Object_Detection":
+                    global object_detection_containers
                     object_detection_containers = val1
                 elif key1 == "Scene_Recognition":
+                    global scene_recognition_containers
                     scene_recognition_containers = val1
                 elif key1 == "Image_Recognition":
+                    global image_recognition_containers
                     image_recognition_containers = val1
                 elif key1 == "Image_Search":
+                    global image_search_containers
                     image_search_containers = val1
                 elif key1 == "Face_Recognition":
+                    global face_recognition_containers
                     face_recognition_containers = val1
         elif key == "Audio":
             for key1, val1 in val.items():
                 if key1 == "Sound_Classification":
+                    global sound_classification_containers
                     sound_classification_containers = val1
                 elif key1 == "Audio_Fingerprinting":
+                    global audio_fingerprinting_containers
                     audio_fingerprinting_containers = val1
                 elif key1 == "Speech_To_Text":
+                    global speech_to_text_containers
                     speech_to_text_containers = val1
         elif key == "Entity":
+            global entity_recognition_containers
             entity_recognition_containers = val
         elif key == "Search":
+            global search_containers
             search_containers = val
 
 
@@ -105,11 +119,9 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
 
 def send_to_topic(topic, value):
     print("####################################")
-    future = init.producer_obj.send(topic, value=str(value))
-    result = future.get(timeout=60)
-    print(result)
-    init.producer_obj.flush()
-    print("sent message")
+    print(topic)
+    subprocess.call(["python3", "kafka_send.py", str(topic), str(value)])
+
 
 
 def send_to_kafka_topics(group, pk):
@@ -254,12 +266,15 @@ def main(file, dict):
                                                    group=group
                                                    )
         elif group == "video":
-            target_file = init.file_convert_obj.convert_video(source_format=extension, file=download_file)
-            shutil.rmtree(new_directory)
-            image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
-                                               extension="wav",
-                                               file_name=file,
-                                               group=group
-                                               )
+            if init.file_check_obj.check_video_audio(download_file):
+                target_file = init.file_convert_obj.convert_video(source_format=extension, file=download_file)
+                shutil.rmtree(new_directory)
+                image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
+                                                   extension="wav",
+                                                   file_name=file,
+                                                   group=group
+                                                   )
+            else:
+                shutil.rmtree(new_directory)
     else:
         shutil.rmtree(new_directory)

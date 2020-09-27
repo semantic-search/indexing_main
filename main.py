@@ -1,14 +1,14 @@
 from task import main
 import init
 import globals
-from Services.YamlParserService import parse
-import os
+import yaml
 
 
 if __name__ == '__main__':
     container_client = init.blob_service_client.get_container_client(container=globals.BLOB_STORAGE_CONTAINER_NAME)
     blob_list = container_client.list_blobs()
-    parse(os.path.abspath("config.yaml"))
+    with open("config.yaml") as f:
+        config_dict = yaml.safe_load(f)
     for blob in blob_list:
         print(blob.name)
-        main.delay(blob.name)
+        main.delay(blob.name, config_dict)
