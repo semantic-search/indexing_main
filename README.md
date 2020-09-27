@@ -11,7 +11,9 @@ flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
 ## Providing Permission
 ```
 cd Services
+
 chmod u+x pdfimages
+
 chmod u+x pdftotext
 ```
 ## Container Required
