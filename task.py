@@ -100,7 +100,7 @@ def send_to_kafka_topics(group, pk):
 @celery_app.task()
 def main(file):
     global_init()
-    blob_client = init.blob_service_client.get_blob_client(container=globals.AZURE_STORAGE_CONTAINER, blob=file)
+    blob_client = init.blob_service_client.get_blob_client(container=globals.BLOB_STORAGE_CONTAINER_NAME, blob=file)
     new_directory = "Downloads/" + str(uuid.uuid4()) + "/"
     os.mkdir(new_directory)
     download_file = new_directory + str(file)
