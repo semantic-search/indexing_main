@@ -7,7 +7,7 @@ from db_models.mongo_setup import global_init
 from db_models.models.cache_model import Cache
 import shutil
 from pathlib import Path
-
+from task_worker.celery import celery_app
 
 
 def doc_to_db_and_add_to_kafka(text, file_name, file_dir, file_to_save, extension, images_dict, contains_images):
@@ -48,6 +48,7 @@ def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension):
     """TODO: send text to kafka"""
 
 
+@celery_app.task()
 def main(file):
     global_init()
     blob_client = init.blob_service_client.get_blob_client(container=globals.AZURE_STORAGE_CONTAINER, blob=file)
