@@ -37,7 +37,7 @@ producer_obj = KafkaProducer(
 )
 # azure blob storage client
 blob_service_client = BlobServiceClient.from_connection_string(globals.CONNECTION_STRING)
-
+# file services object
 file_check_obj = FileCheck()
 file_extract_obj = FileExtract()
 file_convert_obj = FileConvert()
