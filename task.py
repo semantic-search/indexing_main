@@ -100,8 +100,8 @@ def main(file):
         elif group == "legacy_document":
             converted_file = init.file_convert_obj.convert_doc(file=download_file, target_extension=extension+"x")
             file_name = Path(converted_file).name
-            text = init.file_extract_obj.extract_text_docs(download_file)
             images_dict = init.file_extract_obj.extract_images_docs(file=converted_file, extension=extension+"x", file_name=file_name)
+            text = init.file_extract_obj.extract_text_docs(converted_file)
             if len(images_dict["images"]) == 0:
                 contains_images = False
             else:

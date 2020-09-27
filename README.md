@@ -8,5 +8,11 @@ sudo apt-get install python-dev libxml2-dev libxslt1-dev antiword unrtf poppler-
 flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
 ```
 
+## Providing Permission
+```
+cd Services
+chmod u+x pdfimages
+chmod u+x pdftotext
+```
 ## Container Required
 docker run -d -p 80:3000 --name unoconv zrrrzzt/docker-unoconv-webservice

@@ -9,4 +9,4 @@ celery_app = Celery(
 )
 
 celery_app.conf.update(task_track_started=True)
-celery_app.conf.imports = ['main']
+celery_app.conf.imports = ['task']
