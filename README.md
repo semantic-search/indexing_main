@@ -33,3 +33,5 @@ celery -A task_worker worker -l info
 ```
 flower -A task_worker --address=0.0.0.0 --port=5555
 ```
+
+Dont Forget to add the environment variables in the .env file
