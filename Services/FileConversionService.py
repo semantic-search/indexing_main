@@ -33,15 +33,18 @@ class FileConvert:
 
     def convert_video(self, source_format, file):
         target_file = "Services/converted_files/" + str(uuid.uuid4()) + ".wav"
-        if source_format == "mp4":
-            subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
-        elif source_format == "mkv":
-            subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
-        elif source_format == "avi":
-            subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
-        elif source_format == "webm":
-            subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
-        os.remove(file)
+        try:
+            if source_format == "mp4":
+                subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
+            elif source_format == "mkv":
+                subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
+            elif source_format == "avi":
+                subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
+            elif source_format == "webm":
+                subprocess.call(["ffmpeg", "-i", file, "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", target_file])
+            os.remove(file)
+        except:
+            os.remove(file)
         return target_file
 
 
