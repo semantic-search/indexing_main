@@ -71,7 +71,7 @@ def main(file):
             if extension == "pdf":
                 check_if_encrypt = init.file_check_obj.check_pdf_encrypted(download_file)
                 if check_if_encrypt:
-                    pass
+                    shutil.rmtree(new_directory)
                 else:
                     text = init.file_extract_obj.extract_text_pdf(download_file)
                     images_dict = init.file_extract_obj.extract_images_pdf(download_file)
@@ -108,6 +108,7 @@ def main(file):
             file_name = Path(converted_file).name
             images_dict = init.file_extract_obj.extract_images_docs(file=converted_file, extension=extension+"x", file_name=file_name)
             text = init.file_extract_obj.extract_text_docs(converted_file)
+            os.remove(converted_file)
             if len(images_dict["images"]) == 0:
                 contains_images = False
             else:
