@@ -12,6 +12,7 @@ RECEIVE_TOPIC = 'KERAS_MODELS'
 ALLOWED_IMAGE_TYPES = ["jpg", "png"]
 KAFKA_USERNAME = os.getenv("KAFKA_USERNAME")
 KAFKA_PASSWORD = os.getenv("KAFKA_PASSWORD")
+KAFKA_CLIENT_ID = os.getenv("KAFKA_CLIENT_ID")
 MONGO_HOST = os.getenv("MONGO_HOST")
 DB = os.getenv('MONGO_DB')
 PORT = os.getenv('MONGO_PORT')
@@ -21,6 +22,21 @@ CONNECTION_STRING = os.getenv('CONNECTION_STRING')
 AZURE_STORAGE_CONTAINER = os.getenv('AZURE_STORAGE_CONTAINER')
 REDIS_DB = '0'
 UNOCONV_SERVER = 'http://localhost:80/unoconv/'
+BLOB_STORAGE_CONTAINER_NAME = os.getenv('BLOB_STORAGE_CONTAINER_NAME')
+image_tasks = list()
+audio_task = list()
+image_captioning_containers = list()
+ocr_containers = list()
+object_detection_containers = list()
+scene_recognition_containers = list()
+image_recognition_containers = list()
+image_search_containers = list()
+face_recognition_containers = list()
+sound_classification_containers = list()
+audio_fingerprinting_containers = list()
+speech_to_text_containers = list()
+entity_recognition_containers = list()
+search_containers = list()
 MIME_TYPES_DOCUMENTS = {
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -52,3 +68,4 @@ MIME_TYPES_VIDEO = {
     "avi": "video/x-msvideo",  # ffmpeg
     "webm": "video/webm"  # ffmpeg
 }
+

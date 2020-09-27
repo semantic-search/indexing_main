@@ -8,3 +8,4 @@ python-magic
 kafka-python
 redis
 textract
+pyyaml

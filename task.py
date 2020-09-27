@@ -34,10 +34,10 @@ def doc_to_db_and_add_to_kafka(text, file_name, file_dir, file_to_save, extensio
     db_object.save()
     shutil.rmtree(images_dict["images_folder"])
     shutil.rmtree(file_dir)
-    """TODO: send text to kafka"""
+    send_to_kafka_topics(group="document", pk=db_object.pk)
 
 
-def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension, rmdir=False, to_rmdir=None):
+def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension, rmdir=False, to_rmdir=None):
     db_object = Cache()
     db_object.file_name = file_name
     db_object.mime_type = extension
@@ -45,14 +45,57 @@ def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension, rmdir
     with open(file_to_save, 'rb') as fd:
         db_object.file.put(fd)
     db_object.save()
-    """TODO: send text to kafka"""
     os.remove(file_to_save)
     if rmdir:
         shutil.rmtree(to_rmdir)
+    if group == "image":
+        send_to_kafka_topics(group=group, pk=db_object.pk)
+    elif group == "audio" or group == "video":
+        send_to_kafka_topics(group=group, pk=db_object.pk)
 
 
 
+def send_to_kafka_topics(group, pk):
+    if group == "image" or group == "document":
+        if globals.image_captioning_containers is not None:
+            for container in globals.image_captioning_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
 
+        if globals.ocr_containers is not None:
+            for container in globals.ocr_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.object_detection_containers is not None:
+            for container in globals.object_detection_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.scene_recognition_containers is not None:
+            for container in globals.scene_recognition_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.image_recognition_containers is not None:
+            for container in globals.image_recognition_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.image_search_containers is not None:
+            for container in globals.image_search_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+
+    elif group == "audio" or group == "video":
+        if globals.sound_classification_containers is not None:
+            for container in globals.sound_classification_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.audio_fingerprinting_containers is not None:
+            for container in globals.audio_fingerprinting_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
+        if globals.speech_to_text_containers is not None:
+            for container in globals.speech_to_text_containers:
+                future = init.producer_obj.send(container, value=str(pk))
+                future.get(timeout=60)
 
 @celery_app.task()
 def main(file):
@@ -134,21 +177,24 @@ def main(file):
                                                    extension=extension,
                                                    file_name=file,
                                                    rmdir=True,
-                                                   to_rmdir=new_directory
+                                                   to_rmdir=new_directory,
+                                                   group=group
                                                    )
             elif extension == "svg":
                 target_file = init.file_convert_obj.convert_svg(file=download_file)
                 shutil.rmtree(new_directory)
                 image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                    extension="png",
-                                                   file_name=file
+                                                   file_name=file,
+                                                   group=group
                                                    )
         elif group == "video":
             target_file = init.file_convert_obj.convert_video(source_format=extension, file=download_file)
             shutil.rmtree(new_directory)
             image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                extension="wav",
-                                               file_name=file
+                                               file_name=file,
+                                               group=group
                                                )
     else:
         shutil.rmtree(new_directory)
