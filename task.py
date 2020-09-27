@@ -48,6 +48,7 @@ def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension, rmdir
     """TODO: send text to kafka"""
     os.remove(file_to_save)
     if rmdir:
+        shutil.rmtree(to_rmdir)
 
 
 
