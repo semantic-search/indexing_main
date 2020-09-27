@@ -4,4 +4,4 @@
 
 	[submodule "docker-unoconv-webservice"]
 	path = docker-unoconv-webservice
-	url = https://github.com/jainal09/docker-unoconv-webservice
+	url = https://github.com/semantic-search/docker-unoconv-webservice.git

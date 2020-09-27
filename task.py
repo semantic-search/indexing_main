@@ -87,7 +87,7 @@ def main(file):
                                                contains_images=contains_images,
                                                file_dir=new_directory
                                                )
-            elif extension == "docx" or extension == "pptx" or extension == "xlsx" or extension == "odt" or  extension == "epub":
+            elif extension == "docx" or extension == "pptx" or extension == "xlsx" or extension == "odt" or  extension =="epub":
                 text = init.file_extract_obj.extract_text_docs(download_file)
                 images_dict = init.file_extract_obj.extract_images_docs(download_file, extension, file_name=file)
                 if len(images_dict["images"]) == 0:

@@ -15,6 +15,21 @@ chmod u+x pdfimages
 chmod u+x pdftotext
 ```
 ## Container Required
+```
 cd docker-unoconv-webservice
+
 docker build -t docker-unoconv-webservice .
-docker run -d -p 80:3000 --name unoconv zrrrzzt/docker-unoconv-webservice
+
+docker run --env-file=docker.env -p 80:3000 docker-unoconv-webservice
+```
+
+## Starting Celery
+
+```
+celery -A task_worker worker -l info
+```
+## Monitor through Flower
+
+```
+flower -A task_worker --address=0.0.0.0 --port=5555
+```
