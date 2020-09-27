@@ -52,7 +52,6 @@ class FileExtract:
         images_list = []
         for image_file in archive.namelist():
             if image_file.startswith(starts_with):
-                print(image_file)
                 image = archive.extract(member=image_file, path=new_directory)
                 images_list.append(image)
         os.remove(new_file)
@@ -99,7 +98,6 @@ class FileExtract:
             images_list.append(image_folder + str(image))
         for file in glob.glob(image_folder + '*.*'):
             if file not in images_list:
-                print(file)
                 os.remove(file)
 
 

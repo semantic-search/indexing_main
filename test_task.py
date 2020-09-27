@@ -102,7 +102,7 @@ def send_to_kafka_topics(group, pk):
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
-@celery_app.task()
+
 def main(file):
     global_init()
     blob_client = init.blob_service_client.get_blob_client(container=globals.BLOB_STORAGE_CONTAINER_NAME, blob=file)
