@@ -9,6 +9,53 @@ import shutil
 from pathlib import Path
 from task_worker.celery import celery_app
 
+image_tasks = list()
+audio_task = list()
+image_captioning_containers = list()
+ocr_containers = list()
+object_detection_containers = list()
+scene_recognition_containers = list()
+image_recognition_containers = list()
+image_search_containers = list()
+face_recognition_containers = list()
+sound_classification_containers = list()
+audio_fingerprinting_containers = list()
+speech_to_text_containers = list()
+entity_recognition_containers = list()
+search_containers = list()
+
+
+def parse(config_dict):
+    for key, val in config_dict.items():
+        if key == "Image":
+            for key1, val1 in val.items():
+                if key1 == "Image_Captioning":
+                    image_captioning_containers = val1
+                elif key1 == "Ocr":
+                    ocr_containers = val1
+                elif key1 == "Object_Detection":
+                    object_detection_containers = val1
+                elif key1 == "Scene_Recognition":
+                    scene_recognition_containers = val1
+                elif key1 == "Image_Recognition":
+                    image_recognition_containers = val1
+                elif key1 == "Image_Search":
+                    image_search_containers = val1
+                elif key1 == "Face_Recognition":
+                    face_recognition_containers = val1
+        elif key == "Audio":
+            for key1, val1 in val.items():
+                if key1 == "Sound_Classification":
+                    sound_classification_containers = val1
+                elif key1 == "Audio_Fingerprinting":
+                    audio_fingerprinting_containers = val1
+                elif key1 == "Speech_To_Text":
+                    speech_to_text_containers = val1
+        elif key == "Entity":
+            entity_recognition_containers = val
+        elif key == "Search":
+            search_containers = val
+
 
 def doc_to_db_and_add_to_kafka(text, file_name, file_dir, file_to_save, extension, images_dict, contains_images):
     db_object = Cache()
@@ -46,63 +93,76 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
         db_object.file.put(fd)
     db_object.save()
     os.remove(file_to_save)
+    print("######################################")
     if rmdir:
         shutil.rmtree(to_rmdir)
     if group == "image":
+        print("sending to kafka")
         send_to_kafka_topics(group=group, pk=db_object.pk)
     elif group == "audio" or group == "video":
         send_to_kafka_topics(group=group, pk=db_object.pk)
 
 
 def send_to_topic(topic, value):
-    init.producer_obj.send(topic, value=str(value))
+    print("####################################")
+    future = init.producer_obj.send(topic, value=str(value))
+    result = future.get(timeout=60)
+    print(result)
     init.producer_obj.flush()
+    print("sent message")
 
 
 def send_to_kafka_topics(group, pk):
+    print("in send ################")
+    print(group)
+    print(pk)
     if group == "image" or group == "document":
-        if globals.image_captioning_containers is not None:
-            for container in globals.image_captioning_containers:
+        print("in image")
+        print(image_captioning_containers)
+        if image_captioning_containers is not None:
+            print("in caption")
+            for container in image_captioning_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
-        if globals.ocr_containers is not None:
-            for container in globals.ocr_containers:
+        if ocr_containers is not None:
+            for container in ocr_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.object_detection_containers is not None:
-            for container in globals.object_detection_containers:
+        if object_detection_containers is not None:
+            for container in object_detection_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.scene_recognition_containers is not None:
-            for container in globals.scene_recognition_containers:
+        if scene_recognition_containers is not None:
+            for container in scene_recognition_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.image_recognition_containers is not None:
-            for container in globals.image_recognition_containers:
+        if image_recognition_containers is not None:
+            for container in image_recognition_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.image_search_containers is not None:
-            for container in globals.image_search_containers:
+        if image_search_containers is not None:
+            for container in image_search_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
     elif group == "audio" or group == "video":
-        if globals.sound_classification_containers is not None:
-            for container in globals.sound_classification_containers:
+        if sound_classification_containers is not None:
+            for container in sound_classification_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.audio_fingerprinting_containers is not None:
-            for container in globals.audio_fingerprinting_containers:
+        if audio_fingerprinting_containers is not None:
+            for container in audio_fingerprinting_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if globals.speech_to_text_containers is not None:
-            for container in globals.speech_to_text_containers:
+        if speech_to_text_containers is not None:
+            for container in speech_to_text_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
 @celery_app.task()
-def main(file):
+def main(file, dict):
+    parse(config_dict=dict)
     global_init()
     blob_client = init.blob_service_client.get_blob_client(container=globals.BLOB_STORAGE_CONTAINER_NAME, blob=file)
     new_directory = "Downloads/" + str(uuid.uuid4()) + "/"
