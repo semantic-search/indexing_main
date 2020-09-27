@@ -37,7 +37,7 @@ def doc_to_db_and_add_to_kafka(text, file_name, file_dir, file_to_save, extensio
     """TODO: send text to kafka"""
 
 
-def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension):
+def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension, rmdir=False, to_rmdir=None):
     db_object = Cache()
     db_object.file_name = file_name
     db_object.mime_type = extension
@@ -46,6 +46,11 @@ def image_audio_to_db_and_add_to_kafka(file_name, file_to_save, extension):
         db_object.file.put(fd)
     db_object.save()
     """TODO: send text to kafka"""
+    os.remove(file_to_save)
+    if rmdir:
+
+
+
 
 
 @celery_app.task()
@@ -116,6 +121,7 @@ def main(file):
                                        )
         elif group == "audio":
             target_file = init.file_convert_obj.convert_audio(source_format=extension, file=download_file)
+            shutil.rmtree(new_directory)
             image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                extension="wav",
                                                file_name=file
@@ -124,16 +130,20 @@ def main(file):
             if extension == "jpg" or extension == "png":
                 image_audio_to_db_and_add_to_kafka(file_to_save=download_file,
                                                    extension=extension,
-                                                   file_name=file
+                                                   file_name=file,
+                                                   rmdir=True,
+                                                   to_rmdir=new_directory
                                                    )
             elif extension == "svg":
                 target_file = init.file_convert_obj.convert_svg(file=download_file)
+                shutil.rmtree(new_directory)
                 image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                    extension="png",
                                                    file_name=file
                                                    )
         elif group == "video":
             target_file = init.file_convert_obj.convert_video(source_format=extension, file=download_file)
+            shutil.rmtree(new_directory)
             image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                extension="wav",
                                                file_name=file
