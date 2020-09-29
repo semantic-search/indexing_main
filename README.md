@@ -35,8 +35,26 @@ celery -A task_worker worker -l info
 ```
 flower -A task_worker --address=0.0.0.0 --port=5555
 ```
-
-Dont Forget to add the environment variables in the .env file
+## Env
+Dont Forget to add the environment variables in the `.env` file
+```.env
+REDIS_HOSTNAME=
+REDIS_PORT=
+REDIS_PASSWORD=
+KAFKA_HOSTNAME=
+KAFKA_PORT=
+MONGO_HOST=
+MONGO_PORT=
+MONGO_DB=
+CONNECTION_STRING=
+MONGO_USER=
+MONGO_PASSWORD=
+BLOB_STORAGE_CONTAINER_NAME=
+KAFKA_CLIENT_ID=
+KAFKA_USERNAME=
+KAFKA_PASSWORD=
+UNOCONV_SERVER =
+```
 
 ## Usage
 ```
