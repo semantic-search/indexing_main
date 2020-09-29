@@ -9,7 +9,9 @@ import chardet
 import shutil
 from zipfile import ZipFile
 import glob
-
+import exifread
+import requests
+import json
 
 
 class FileExtract:
@@ -106,3 +108,46 @@ class FileExtract:
             "images_folder": image_folder
         }
         return final_response
+
+
+    def exif_to_location(self, image):
+        print(image)
+        img_obj = open(image, 'rb')
+        latitude_ref = None
+        latitude = None
+        longitude_ref = None
+        longitude = None
+        tags = exifread.process_file(img_obj, details=False)
+        print(tags)
+        for key, value in tags.items():
+            if str(key) == "GPS GPSLatitudeRef":
+                latitude_ref = str(value)
+            elif str(key) == "GPS GPSLatitude":
+                latitude = eval(str(value))
+            elif str(key) == "GPS GPSLongitudeRef":
+                longitude_ref = str(value)
+            elif str(key) == "GPS GPSLongitude":
+                longitude = eval(str(value))
+        print(latitude_ref)
+        print(longitude_ref)
+        if latitude is None:
+            return None
+        else:
+            latitude = latitude[0] + float(latitude[1]) / 60 + float(latitude[2]) / 3600
+            longitude = longitude[0] + float(longitude[1]) / 60 + float(longitude[2]) / 3600
+
+            if latitude_ref == "W" or latitude_ref == "S":
+                latitude = -latitude
+            elif longitude_ref == "W" or longitude_ref == "S":
+                longitude = -longitude
+            print(latitude, longitude)
+            url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&"+"lat="+str(latitude)+"&lon="+str(longitude)
+            print(url)
+            response = requests.request("GET", url)
+            pic_location_data = dict()
+            location_data = json.loads(response.text)
+            pic_location_data["location_category"] = location_data["category"]
+            pic_location_data["location_type"] = location_data["type"]
+            pic_location_data["location_name"] = location_data["name"]
+            pic_location_data["location_address"] = location_data["address"]
+            return pic_location_data

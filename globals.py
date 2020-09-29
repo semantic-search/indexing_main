@@ -20,9 +20,20 @@ MONGO_USER = os.getenv('MONGO_USER')
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
 CONNECTION_STRING = os.getenv('CONNECTION_STRING')
 REDIS_DB = '0'
-UNOCONV_SERVER = 'http://localhost:80/unoconv/'
+UNOCONV_SERVER = os.getenv('UNOCONV_SERVER')
 BLOB_STORAGE_CONTAINER_NAME = os.getenv('BLOB_STORAGE_CONTAINER_NAME')
-
+image_captioning_containers = None
+ocr_containers = None
+object_detection_containers = None
+scene_recognition_containers = None
+image_recognition_containers = None
+image_search_containers = None
+face_recognition_containers = None
+sound_classification_containers = None
+audio_fingerprinting_containers = None
+speech_to_text_containers = None
+entity_recognition_containers = None
+search_containers = None
 MIME_TYPES_DOCUMENTS = {
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -54,4 +65,3 @@ MIME_TYPES_VIDEO = {
     "avi": "video/x-msvideo",  # ffmpeg
     "webm": "video/webm"  # ffmpeg
 }
-

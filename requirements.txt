@@ -9,3 +9,4 @@ kafka-python
 redis
 textract
 pyyaml
+ExifRead

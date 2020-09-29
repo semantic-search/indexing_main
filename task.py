@@ -1,4 +1,3 @@
-import globals
 import init
 import uuid
 import os
@@ -9,66 +8,24 @@ import shutil
 from pathlib import Path
 from task_worker.celery import celery_app
 import subprocess
+import globals
 
 
-image_tasks = list()
-audio_task = list()
-image_captioning_containers = list()
-ocr_containers = list()
-object_detection_containers = list()
-scene_recognition_containers = list()
-image_recognition_containers = list()
-image_search_containers = list()
-face_recognition_containers = list()
-sound_classification_containers = list()
-audio_fingerprinting_containers = list()
-speech_to_text_containers = list()
-entity_recognition_containers = list()
-search_containers = list()
-
-
-def parse(config_dict):
-    for key, val in config_dict.items():
-        if key == "Image":
-            for key1, val1 in val.items():
-                if key1 == "Image_Captioning":
-                    global image_captioning_containers
-                    image_captioning_containers = val1
-                elif key1 == "Ocr":
-                    global ocr_containers
-                    ocr_containers = val1
-                elif key1 == "Object_Detection":
-                    global object_detection_containers
-                    object_detection_containers = val1
-                elif key1 == "Scene_Recognition":
-                    global scene_recognition_containers
-                    scene_recognition_containers = val1
-                elif key1 == "Image_Recognition":
-                    global image_recognition_containers
-                    image_recognition_containers = val1
-                elif key1 == "Image_Search":
-                    global image_search_containers
-                    image_search_containers = val1
-                elif key1 == "Face_Recognition":
-                    global face_recognition_containers
-                    face_recognition_containers = val1
-        elif key == "Audio":
-            for key1, val1 in val.items():
-                if key1 == "Sound_Classification":
-                    global sound_classification_containers
-                    sound_classification_containers = val1
-                elif key1 == "Audio_Fingerprinting":
-                    global audio_fingerprinting_containers
-                    audio_fingerprinting_containers = val1
-                elif key1 == "Speech_To_Text":
-                    global speech_to_text_containers
-                    speech_to_text_containers = val1
-        elif key == "Entity":
-            global entity_recognition_containers
-            entity_recognition_containers = val
-        elif key == "Search":
-            global search_containers
-            search_containers = val
+def populate_lists(group_array):
+    globals.image_tasks = group_array[0]
+    globals.audio_task = group_array[1]
+    globals.image_captioning_containers = group_array[2]
+    globals.ocr_containers = group_array[3]
+    globals.object_detection_containers = group_array[4]
+    globals.scene_recognition_containers = group_array[5]
+    globals.image_recognition_containers = group_array[6]
+    globals.image_search_containers = group_array[7]
+    globals.face_recognition_containers = group_array[8]
+    globals.sound_classification_containers = group_array[9]
+    globals.audio_fingerprinting_containers = group_array[10]
+    globals.speech_to_text_containers = group_array[11]
+    globals.entity_recognition_containers = group_array[12]
+    globals.search_containers = group_array[13]
 
 
 def doc_to_db_and_add_to_kafka(text, file_name, file_dir, file_to_save, extension, images_dict, contains_images):
@@ -105,7 +62,7 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
     db_object.is_doc_type = False
     with open(file_to_save, 'rb') as fd:
         db_object.file.put(fd)
-    db_object.save()
+
     os.remove(file_to_save)
     print("######################################")
     if rmdir:
@@ -113,8 +70,13 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
     if group == "image":
         print("sending to kafka")
         send_to_kafka_topics(group=group, pk=db_object.pk)
+        photo_location = init.file_extract_obj.exif_to_location(file_to_save)
+        if photo_location is not None:
+            db_object.image_location = photo_location
+        db_object.save()
     elif group == "audio" or group == "video":
         send_to_kafka_topics(group=group, pk=db_object.pk)
+        db_object.save()
 
 
 def send_to_topic(topic, value):
@@ -123,59 +85,60 @@ def send_to_topic(topic, value):
     subprocess.call(["python3", "kafka_send.py", str(topic), str(value)])
 
 
-
 def send_to_kafka_topics(group, pk):
     print("in send ################")
     print(group)
     print(pk)
     if group == "image" or group == "document":
         print("in image")
-        print(image_captioning_containers)
-        if image_captioning_containers is not None:
+        print(globals.image_captioning_containers)
+        if globals.image_captioning_containers is not None:
             print("in caption")
-            for container in image_captioning_containers:
+            for container in globals.image_captioning_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
-        if ocr_containers is not None:
-            for container in ocr_containers:
+        if globals.ocr_containers is not None:
+            for container in globals.ocr_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if object_detection_containers is not None:
-            for container in object_detection_containers:
+        if globals.object_detection_containers is not None:
+            for container in globals.object_detection_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if scene_recognition_containers is not None:
-            for container in scene_recognition_containers:
+        if globals.scene_recognition_containers is not None:
+            for container in globals.scene_recognition_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if image_recognition_containers is not None:
-            for container in image_recognition_containers:
+        if globals.image_recognition_containers is not None:
+            for container in globals.image_recognition_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if image_search_containers is not None:
-            for container in image_search_containers:
+        if globals.image_search_containers is not None:
+            for container in globals.image_search_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
     elif group == "audio" or group == "video":
-        if sound_classification_containers is not None:
-            for container in sound_classification_containers:
+        if globals.sound_classification_containers is not None:
+            for container in globals.sound_classification_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if audio_fingerprinting_containers is not None:
-            for container in audio_fingerprinting_containers:
+        if globals.audio_fingerprinting_containers is not None:
+            for container in globals.audio_fingerprinting_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
-        if speech_to_text_containers is not None:
-            for container in speech_to_text_containers:
+        if globals.speech_to_text_containers is not None:
+            for container in globals.speech_to_text_containers:
                 print(container)
                 send_to_topic(topic=container, value=pk)
 
+
+
 @celery_app.task()
-def main(file, dict):
-    parse(config_dict=dict)
+def main(file, group_array):
     global_init()
+    populate_lists(group_array)
     blob_client = init.blob_service_client.get_blob_client(container=globals.BLOB_STORAGE_CONTAINER_NAME, blob=file)
     new_directory = "Downloads/" + str(uuid.uuid4()) + "/"
     os.mkdir(new_directory)
