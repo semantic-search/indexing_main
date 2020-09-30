@@ -5,9 +5,12 @@ import subprocess
 
 
 class FileCheck:
-    def check_mime_type(self, file):
+    def check_mime_type(self, file=False, extension=False):
         file_extension = None
-        mime_type = magic.from_file(file, mime=True)
+        if extension:
+            mime_type = extension
+        else:
+            mime_type = magic.from_file(file, mime=True)
         for key, val in globals.MIME_TYPES_DOCUMENTS.items():
             if str(mime_type) == val:
                 file_extension = key

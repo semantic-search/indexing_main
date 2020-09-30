@@ -6,7 +6,6 @@ from Services.FileExtractionService import FileExtract
 from Services.FileCheckService import FileCheck
 
 
-
 # Redis initialize
 redis_obj = redis.StrictRedis(
     host=globals.REDIS_HOSTNAME,
@@ -14,7 +13,6 @@ redis_obj = redis.StrictRedis(
     password=globals.REDIS_PASSWORD,
     ssl=True
 )
-
 
 
 # azure blob storage client
