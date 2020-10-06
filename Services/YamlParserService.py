@@ -1,5 +1,5 @@
 import yaml
-
+import globals
 
 def parse(yaml_file):
     with open(yaml_file) as f:

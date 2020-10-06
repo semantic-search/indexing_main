@@ -11,7 +11,7 @@ redis_obj = redis.StrictRedis(
     host=globals.REDIS_HOSTNAME,
     port=globals.REDIS_PORT,
     password=globals.REDIS_PASSWORD,
-    ssl=True
+    ssl=False
 )
 
 

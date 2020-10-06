@@ -118,7 +118,6 @@ class FileExtract:
         longitude_ref = None
         longitude = None
         tags = exifread.process_file(img_obj, details=False)
-        print(tags)
         for key, value in tags.items():
             if str(key) == "GPS GPSLatitudeRef":
                 latitude_ref = str(value)

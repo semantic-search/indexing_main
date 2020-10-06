@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
+STORAGE_PROVIDER = os.getenv("STORAGE_PROVIDER")
 SEND_TOPIC_FULL = "IMAGE_RESULTS"
 SEND_TOPIC_TEXT = "TEXT"
 KAFKA_HOSTNAME = os.getenv("KAFKA_HOSTNAME")
@@ -49,9 +51,12 @@ MIME_TYPES_LEGACY_DOCUMENTS = {
 }
 MIME_TYPES_AUDIO = {
     "mp3": "audio/mpeg",  # sox
-    "wav": "audio/x-wav",  # sox
-    "m4a": "video/mp4",   # ffmpeg
+    "wav": "audio/x-wav",
+    "wav1": "audio/wav",# sox
+    "m4a": "video/mp4",
+    "m4a1": "audio/mp4",# ffmpeg
     "aiff": "audio/x-aiff",  # sox
+    "aiff1": "audio/aiff"
 
 }
 MIME_TYPES_IMAGES = {
@@ -63,5 +68,6 @@ MIME_TYPES_VIDEO = {
     "mp4": "video/mp4",  # ffmpeg
     "mkv": "video/x-matroska",  # ffmpeg
     "avi": "video/x-msvideo",  # ffmpeg
+    "avi1": "video/avi", # ffmpeg
     "webm": "video/webm"  # ffmpeg
 }

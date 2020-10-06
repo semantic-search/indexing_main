@@ -5,7 +5,7 @@ import subprocess
 def send_to_topic(topic, value):
     print("####################################")
     print(topic)
-    subprocess.call(["python3", "kafka_send.py", str(topic), str(value)])
+    subprocess.call(["python3", "task_utils/kafka_send.py", str(topic), str(value)])
 
 
 def send_to_kafka_topics(group, pk):
