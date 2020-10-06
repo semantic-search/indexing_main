@@ -10,3 +10,6 @@ redis
 textract
 pyyaml
 ExifRead
+fastapi
+python-multipart
+uvicorn

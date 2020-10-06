@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 STORAGE_PROVIDER = os.getenv("STORAGE_PROVIDER")
 SEND_TOPIC_FULL = "IMAGE_RESULTS"

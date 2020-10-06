@@ -11,14 +11,18 @@ import globals
 
 
 @celery_app.task()
-def main(file, group_array):
+def main(file, group_array, api_mode=False):
     populate_lists(group_array)
-    downloaded_blob_info = download_blob(
-        provider=globals.STORAGE_PROVIDER,
-        blob_to_download=file
-    )
-    file_to_index = downloaded_blob_info["file"]
-    new_directory = downloaded_blob_info["directory"]
+    if api_mode:
+        file_to_index = file["file"]
+        new_directory = file["directory"]
+    else:
+        downloaded_blob_info = download_blob(
+            provider=globals.STORAGE_PROVIDER,
+            blob_to_download=file
+        )
+        file_to_index = downloaded_blob_info["file"]
+        new_directory = downloaded_blob_info["directory"]
     mime_dict = init.file_check_obj.check_mime_type(file=file_to_index)
     if mime_dict is not None:
         extension = mime_dict["extension"]
