@@ -30,9 +30,12 @@ def index_file(file: UploadFile = File(...), yaml:  UploadFile = File(...)):
 
 
 @app.post("/index/websites/")
-def website(urls: list = Form(...)):
+def website(urls: str = Form(...)):
+    urls = eval(urls)
+    print(type(urls))
+    print(len(urls))
     for url in urls:
-        index_web(str(url))
-
+        print(url)
+        index_web.delay(str(url))
 
 
