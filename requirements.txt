@@ -13,3 +13,5 @@ ExifRead
 fastapi
 python-multipart
 uvicorn
+wget
+html2text

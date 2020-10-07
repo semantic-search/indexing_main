@@ -16,6 +16,7 @@ def main(file, group_array, api_mode=False):
     if api_mode:
         file_to_index = file["file"]
         new_directory = file["directory"]
+        file = Path(file_to_index).name
     else:
         downloaded_blob_info = download_blob(
             provider=globals.STORAGE_PROVIDER,
