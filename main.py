@@ -23,7 +23,6 @@ if __name__ == '__main__':
         content_type = blob.content_settings["content_type"]
         print(content_type)
         mime_dict = init.file_check_obj.check_mime_type(extension=content_type)
-        print(mime_dict)
         if mime_dict is None:
             pass
         else:
