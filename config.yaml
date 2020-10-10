@@ -43,7 +43,5 @@ Entity:
 - SPACY_LARGE
 - FLAIR
 Search:
-- FAISS
-- U.S.E
 - B.E.R.T
 - ELASTIC_FUZZY_SEARCH

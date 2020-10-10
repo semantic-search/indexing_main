@@ -3,16 +3,18 @@ import init
 import globals
 import sys
 from Services.YamlParserService import parse
-
+import pyfiglet
 
 if __name__ == '__main__':
+    print(pyfiglet.figlet_format(str(globals.STORAGE_PROVIDER) + " BULK_FILE_INDEXER"))
     blob_meta_list = []
     container_client = init.blob_service_client.get_container_client(container=globals.BLOB_STORAGE_CONTAINER_NAME)
     blob_list = container_client.list_blobs()
     yaml_file = sys.argv[1]
     group_array = parse(yaml_file)
+    payload = dict()
+    payload["client_id"] = 151515
     print(group_array)
-
     for blob in blob_list:
         print(blob.name)
         file = blob.name
@@ -25,7 +27,12 @@ if __name__ == '__main__':
         else:
             group = mime_dict["group"]
             if group == "document" or group == "image" or group == "legacy_document":
-                init.redis_obj.set("last_doc_image", file)
+                payload["last_file"] = "last_doc_image"
+                payload["value"] = file
+                """api call to dashboard api"""
+                response = requests.request("POST", url,  data=payload)
             elif group == "video" or group == "audio":
-                init.redis_obj.set("last_audio", file)
+                payload["last_file"] = "last_audio"
+                payload["value"] = file
+                """api call to dashbaord api"""
             main.delay(blob.name, group_array)

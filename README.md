@@ -43,13 +43,13 @@ docker run --env-file=docker.env -p 80:3000 docker-unoconv-webservice
 ```
 export KAFKA_OPTS="-Djava.security.auth.login.config=/home/jainal09/kafka_2.13-2.6.0/config/zookeeper_jaas.conf"
 
-bin/zookeeper-server-start.sh config/zookeeper.properties
+kafka_2.13-2.6.0/bin/zookeeper-server-start.sh kafka_2.13-2.6.0/config/zookeeper.properties
 ````
 > Server
 ```
 export KAFKA_OPTS="-Djava.security.auth.login.config=/home/jainal09/kafka_2.13-2.6.0/config/kafka_server_jaas.conf"
 
-bin/kafka-server-start.sh config/server.properties
+kafka_2.13-2.6.0/bin/kafka-server-start.sh kafka_2.13-2.6.0/config/server.properties
 ```
 
 
