@@ -24,8 +24,8 @@ def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension
         os.remove(file_to_save)
         send_to_kafka_topics(group=group, pk=db_object.pk)
     elif group == "audio" or group == "video":
-        send_to_kafka_topics(group=group, pk=db_object.pk)
         db_object.save()
         os.remove(file_to_save)
+        send_to_kafka_topics(group=group, pk=db_object.pk)
     if rmdir:
         shutil.rmtree(to_rmdir)
