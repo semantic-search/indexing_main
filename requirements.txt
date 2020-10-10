@@ -16,3 +16,4 @@ uvicorn
 wget
 html2text
 pyfiglet
+requests
