@@ -4,9 +4,11 @@ import globals
 import sys
 from Services.YamlParserService import parse
 import pyfiglet
+import requests
+
 
 if __name__ == '__main__':
-    print(pyfiglet.figlet_format(str(globals.STORAGE_PROVIDER) + " BULK_FILE_INDEXER"))
+    print(pyfiglet.figlet_format(str(globals.STORAGE_PROVIDER) + " BULK FILE INDEXER"))
     blob_meta_list = []
     container_client = init.blob_service_client.get_container_client(container=globals.BLOB_STORAGE_CONTAINER_NAME)
     blob_list = container_client.list_blobs()
@@ -30,7 +32,7 @@ if __name__ == '__main__':
                 payload["last_file"] = "last_doc_image"
                 payload["value"] = file
                 """api call to dashboard api"""
-                response = requests.request("POST", url,  data=payload)
+                response = requests.request("POST", globals.DASHBOARD_URL,  data=payload)
             elif group == "video" or group == "audio":
                 payload["last_file"] = "last_audio"
                 payload["value"] = file
