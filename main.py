@@ -8,7 +8,8 @@ import requests
 
 
 if __name__ == '__main__':
-    print(pyfiglet.figlet_format(str(globals.STORAGE_PROVIDER) + " BULK FILE INDEXER"))
+    print(pyfiglet.figlet_format(str(globals.STORAGE_PROVIDER)))
+    print(pyfiglet.figlet_format("BULK FILE INDEXER"))
     blob_meta_list = []
     container_client = init.blob_service_client.get_container_client(container=globals.BLOB_STORAGE_CONTAINER_NAME)
     blob_list = container_client.list_blobs()
