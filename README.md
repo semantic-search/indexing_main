@@ -12,7 +12,7 @@ flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig
 
 pip install -r requirements.txt
 ```
-
+    
 ## Providing Permission
 ```
 cd Services
@@ -43,7 +43,7 @@ docker run --env-file=docker.env -p 80:3000 docker-unoconv-webservice
 ```
 export KAFKA_OPTS="-Djava.security.auth.login.config=/home/jainal09/kafka_2.13-2.6.0/config/zookeeper_jaas.conf"
 
-kafka_2.13-2.6.0/bin/zookeeper-server-start.sh kafka_2.13-2.6.0/config/zookeeper.properties
+kafka_2.13-2.6.0/bin/zookeeper-server-start.sh config/zookeeper.properties
 ````
 > Server
 ```
@@ -56,12 +56,12 @@ kafka_2.13-2.6.0/bin/kafka-server-start.sh kafka_2.13-2.6.0/config/server.proper
 ## Starting Celery
 
 ```
-celery -A task_worker worker -l info
+celery -A task_worker worker -l INFO
 ```
 ## Monitor through Flower
 
 ```
-flower -A task_worker --address=0.0.0.0 --port=5555
+flower -A task_worker --address=0.0.0.0 --port=5550 
 ```
 ## Env
 Dont Forget to add the environment variables in the `.env` file

@@ -17,3 +17,5 @@ wget
 html2text
 pyfiglet
 requests
+celery==4.0.0
+flower
