@@ -1,4 +1,3 @@
-
 Image:
   Image_Captioning:
   - DENSE_CAP
@@ -7,9 +6,8 @@ Image:
   - NEURAL_TALK_2
   - IM2TXT
   Ocr:
-  - KERAS_OCR
+  - KERAS_TESSER_OCR
   - EASY_OCR
-  - TESSERACT_OCR
   Object_Detection:
   - PP_YOLO
   - YOLO_V4
@@ -39,9 +37,3 @@ Audio:
   - JASPER
   - QUARTZNET
   - DEEP_SPEECH
-Entity:
-- SPACY_LARGE
-- FLAIR
-Search:
-- B.E.R.T
-- ELASTIC_FUZZY_SEARCH
