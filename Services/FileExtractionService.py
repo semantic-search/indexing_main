@@ -12,6 +12,7 @@ import glob
 import exifread
 import requests
 import json
+from PIL import Image
 
 
 class FileExtract:
@@ -55,7 +56,15 @@ class FileExtract:
         for image_file in archive.namelist():
             if image_file.startswith(starts_with):
                 image = archive.extract(member=image_file, path=new_directory)
-                images_list.append(image)
+                im = Image.open(image)
+                extrema = im.convert("L").getextrema()
+                if extrema[0] == extrema[1]:
+                    os.remove(image)
+                else:
+                    if os.stat(image).st_size < 10000:
+                        os.remove(image)
+                    else:
+                        images_list.append(image)
         os.remove(new_file)
         final_response = {
             "images": images_list,
@@ -92,19 +101,23 @@ class FileExtract:
         os.mkdir(image_folder)
         images = []
         """Extract images"""
-        subprocess.call(["./Services/pdfimages", "-j", file, image_folder])
-        for path in Path(image_folder).rglob('*.jpg'):
-            images.append(path.name)
-        images_list = []
-        for image in images:
-            images_list.append(image_folder + str(image))
-        for file in glob.glob(image_folder + '*.*'):
-            if file not in images_list:
-                os.remove(file)
-
+        subprocess.call(["./Services/pdfimages", file, image_folder])
+        for path in Path(image_folder).rglob('*.ppm'):
+            im = Image.open(path)
+            extrema = im.convert("L").getextrema()
+            if extrema[0] == extrema[1]:
+                os.remove(path)
+            else:
+                new = image_folder + str(uuid.uuid4()) + ".jpg"
+                im.save(new)
+                os.remove(path)
+                if os.stat(new).st_size < 10000:
+                    os.remove(new)
+                else:
+                    images.append(new)
 
         final_response = {
-            "images": images_list,
+            "images": images,
             "images_folder": image_folder
         }
         return final_response

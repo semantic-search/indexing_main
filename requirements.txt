@@ -17,5 +17,6 @@ wget
 html2text
 pyfiglet
 requests
-celery==4.0.0
+celery==4.1.1
 flower
+pillow

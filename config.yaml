@@ -27,7 +27,7 @@ Image:
   - IMAGE_NET_KERAS_MODELS
   - TENCENT_ML_IMAGES_MODEL
   Image_Search:
-  - VGG16_MODEL
+  - XCEPTION_MODEL
   Face_Recognition:
   - DLIB
 Audio:

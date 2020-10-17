@@ -1,0 +1,5 @@
+#/usr/bin/env bash
+echo "post merge script"
+cd Services
+chmod u+x pdfimages
+chmod u+x pdftotext
