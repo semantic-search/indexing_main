@@ -5,6 +5,7 @@ import os
 from task import main
 from Services.YamlParserService import parse
 from index_web import index_web
+import globals
 
 app = FastAPI()
 
