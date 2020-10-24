@@ -50,5 +50,5 @@ def website(urls: str = Form(...)):
     for url in urls:
         print(url)
         index_web.delay(str(url))
-
+    return True
 
