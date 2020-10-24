@@ -4,7 +4,7 @@ import os
 import cairosvg
 import subprocess
 import globals
-
+from PIL import Image
 
 class FileConvert:
     def convert_doc(self, file, target_extension):
@@ -51,5 +51,15 @@ class FileConvert:
     def convert_svg(self, file):
         target_file = "Services/converted_files/" + str(uuid.uuid4()) + ".png"
         cairosvg.svg2png(url=file, write_to=target_file)
+        img = Image.open(target_file)
+        basewidth = 1000
+        width, height = img.size
+        if width > 1920 or height > 1080:
+            wpercent = (basewidth / float(img.size[0]))
+            hsize = int((float(img.size[1]) * float(wpercent)))
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+            img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+            img.save(target_file)
         os.remove(file)
         return target_file

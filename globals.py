@@ -26,6 +26,7 @@ REDIS_DB = '0'
 UNOCONV_SERVER = os.getenv('UNOCONV_SERVER')
 BLOB_STORAGE_CONTAINER_NAME = os.getenv('BLOB_STORAGE_CONTAINER_NAME')
 DASHBOARD_URL = os.getenv('DASHBOARD_URL')
+CORS_ORIGIN = os.getenv('CORS_ORIGIN')
 image_captioning_containers = None
 ocr_containers = None
 object_detection_containers = None

@@ -27,7 +27,7 @@ Image:
   Image_Search:
   - XCEPTION_MODEL
   Face_Recognition:
-  - DLIB
+  - FACE_RECOG
 Audio:
   Sound_Classification:
   - MAX_AUDIO_CLASSIFIER

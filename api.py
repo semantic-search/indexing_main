@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form
+from fastapi.middleware.cors import CORSMiddleware
 import uuid
 import os
 from task import main
@@ -7,6 +8,17 @@ from index_web import index_web
 
 app = FastAPI()
 
+origins = [
+    globals.CORS_ORIGIN
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/index/file/")
 def index_file(file: UploadFile = File(...), yaml:  UploadFile = File(...)):
