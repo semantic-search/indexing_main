@@ -7,7 +7,9 @@ from task_utils.download_file_from_storage import download_blob
 from task_utils.image_or_audio_add_to_db import image_audio_to_db_and_add_to_kafka
 from task_utils.document_add_to_db import doc_to_db_and_add_to_kafka
 from task_utils.populator import populate_lists
+from task_utils.remove_file import remove_api
 import globals
+import pathlib
 
 
 @celery_app.task()
@@ -32,6 +34,8 @@ def main(file, group_array, api_mode=False):
             if extension == "pdf":
                 check_if_encrypt = init.file_check_obj.check_pdf_encrypted(file_to_index)
                 if check_if_encrypt:
+                    remove_api(file, "last_doc_image")
+                    init.send_log_msg("ENCRYPTED PDF " + file + " of type last_doc_image")
                     shutil.rmtree(new_directory)
                 else:
                     text = init.file_extract_obj.extract_text_pdf(file_to_index)
@@ -70,26 +74,27 @@ def main(file, group_array, api_mode=False):
 
         elif group == "legacy_document":
             converted_file = init.file_convert_obj.convert_doc(file=file_to_index, target_extension=extension + "x")
-            file_name = Path(converted_file).name
-            images_dict = init.file_extract_obj.extract_images_docs(
-                file=converted_file,
-                extension=extension+"x",
-                file_name=file_name
-            )
-            text = init.file_extract_obj.extract_text_docs(converted_file)
-            os.remove(converted_file)
-            if len(images_dict["images"]) == 0:
-                contains_images = False
-            else:
-                contains_images = True
-            doc_to_db_and_add_to_kafka(text=text,
-                                       file_name=file,
-                                       file_to_save=file_to_index,
-                                       extension=extension,
-                                       images_dict=images_dict,
-                                       contains_images=contains_images,
-                                       file_dir=new_directory
-                                       )
+            if converted_file is not None:
+                file_name = Path(converted_file).name
+                images_dict = init.file_extract_obj.extract_images_docs(
+                    file=converted_file,
+                    extension=extension+"x",
+                    file_name=file_name
+                )
+                text = init.file_extract_obj.extract_text_docs(converted_file)
+                os.remove(converted_file)
+                if len(images_dict["images"]) == 0:
+                    contains_images = False
+                else:
+                    contains_images = True
+                doc_to_db_and_add_to_kafka(text=text,
+                                           file_name=file,
+                                           file_to_save=file_to_index,
+                                           extension=extension,
+                                           images_dict=images_dict,
+                                           contains_images=contains_images,
+                                           file_dir=new_directory
+                                           )
         elif group == "audio":
             target_file = init.file_convert_obj.convert_audio(source_format=extension, file=file_to_index)
             shutil.rmtree(new_directory)
@@ -125,6 +130,16 @@ def main(file, group_array, api_mode=False):
                                                    group=group
                                                    )
             else:
+                remove_api(file, "last_audio_file")
+                init.send_log_msg("VIDEO WITHOUT AUDIO " + file + " of type last_audio_file")
                 shutil.rmtree(new_directory)
     else:
+        fake_extension = pathlib.Path(file).suffix
+        print("fake extension")
+        if fake_extension in globals.FAKE_DOC_IMAGE_EXTENSIONS:
+            remove_api(file, "last_doc_image")
+            init.send_log_msg("FAKE_FILE " + file + " of type last_doc_image")
+        elif fake_extension in globals.FAKE_AUDIO_EXTENSIONS:
+            remove_api(file, "last_audio_file")
+            init.send_log_msg("FAKE_FILE " + file + " of type last_audio_file")
         shutil.rmtree(new_directory)

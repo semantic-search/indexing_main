@@ -21,6 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.post("/index/file/")
 def index_file(file: UploadFile = File(...), yaml:  UploadFile = File(...)):
     yaml_file = yaml.filename

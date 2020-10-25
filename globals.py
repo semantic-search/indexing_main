@@ -4,15 +4,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 STORAGE_PROVIDER = os.getenv("STORAGE_PROVIDER")
-SEND_TOPIC_FULL = "IMAGE_RESULTS"
-SEND_TOPIC_TEXT = "TEXT"
 KAFKA_HOSTNAME = os.getenv("KAFKA_HOSTNAME")
 KAFKA_PORT = os.getenv("KAFKA_PORT")
 REDIS_HOSTNAME = os.getenv("REDIS_HOSTNAME")
 REDIS_PORT = os.getenv("REDIS_PORT")
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
-RECEIVE_TOPIC = 'KERAS_MODELS'
-ALLOWED_IMAGE_TYPES = ["jpg", "png"]
 KAFKA_USERNAME = os.getenv("KAFKA_USERNAME")
 KAFKA_PASSWORD = os.getenv("KAFKA_PASSWORD")
 KAFKA_CLIENT_ID = os.getenv("KAFKA_CLIENT_ID")
@@ -25,7 +21,11 @@ CONNECTION_STRING = os.getenv('CONNECTION_STRING')
 REDIS_DB = '0'
 UNOCONV_SERVER = os.getenv('UNOCONV_SERVER')
 BLOB_STORAGE_CONTAINER_NAME = os.getenv('BLOB_STORAGE_CONTAINER_NAME')
-DASHBOARD_URL = os.getenv('DASHBOARD_URL')
+DASHBOARD_API_URL_UPDATE_STATE = os.getenv('DASHBOARD_API_URL_UPDATE_STATE')
+DASHBOARD_API_URL_REMOVE_FILE = os.getenv('DASHBOARD_API_URL_REMOVE_FILE')
+DASHBOARD_API_CLIENT_ID = os.getenv('DASHBOARD_API_CLIENT_ID')
+LOGGER_SERVER_HOST = os.getenv('LOGGER_SERVER_HOST')
+LOGGER_SERVER_PORT = os.getenv('LOGGER_SERVER_PORT')
 CORS_ORIGIN = os.getenv('CORS_ORIGIN')
 image_captioning_containers = None
 ocr_containers = None
@@ -74,3 +74,24 @@ MIME_TYPES_VIDEO = {
     "avi1": "video/avi", # ffmpeg
     "webm": "video/webm"  # ffmpeg
 }
+FAKE_DOC_IMAGE_EXTENSIONS = [
+    ".doc",
+    ".docx",
+    ".ppt",
+    ".pptx",
+    ".xls",
+    ".xlsx",
+    ".pdf",
+    ".epub",
+    ".odt",
+    ".svg",
+    ".png",
+    ".jpg",
+    ".jpeg"
+]
+FAKE_AUDIO_EXTENSIONS = [
+ ".mp4",
+ ".mkv",
+ ".avi",
+ ".webm"
+]

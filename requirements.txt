@@ -20,3 +20,4 @@ requests
 celery==4.1.1
 flower
 pillow
+python-logstash-async

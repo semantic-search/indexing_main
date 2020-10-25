@@ -52,6 +52,9 @@ export KAFKA_OPTS="-Djava.security.auth.login.config=/home/jainal09/kafka_2.13-2
 kafka_2.13-2.6.0/bin/kafka-server-start.sh kafka_2.13-2.6.0/config/server.properties
 ```
 
+>logstash Server
+
+[Setup a Logstash by following this blog](https://medium.com/swlh/python-async-logging-to-an-elk-stack-35498432cb0a)
 
 ## Starting Celery
 
@@ -71,18 +74,24 @@ REDIS_PORT=
 REDIS_PASSWORD=
 KAFKA_HOSTNAME=
 KAFKA_PORT=
-MONGO_HOST=
-MONGO_PORT=
-MONGO_DB=
-CONNECTION_STRING=
-MONGO_USER=
-MONGO_PASSWORD=
-BLOB_STORAGE_CONTAINER_NAME=
 KAFKA_CLIENT_ID=
 KAFKA_USERNAME=
 KAFKA_PASSWORD=
+MONGO_HOST=
+MONGO_PORT=
+MONGO_DB=
+MONGO_USER=
+MONGO_PASSWORD=
+CONNECTION_STRING=
+BLOB_STORAGE_CONTAINER_NAME=
 UNOCONV_SERVER =
 STORAGE_PROVIDER = 
+DASHBOARD_API_URL_UPDATE_STATE=
+DASHBOARD_API_URL_REMOVE_FILE=
+DASHBOARD_API_CLIENT_ID=
+LOGGER_SERVER_HOST=
+LOGGER_SERVER_PORT=
+CORS_ORIGIN=
 ```
 
 ## Usage
