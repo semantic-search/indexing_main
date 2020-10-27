@@ -4,12 +4,13 @@ import os
 import shutil
 from .kafka_parse_utils import send_to_kafka_topics
 import init
+import pathlib
 
 
 def image_audio_to_db_and_add_to_kafka(group, file_name, file_to_save, extension, rmdir=False, to_rmdir=None):
     global_init()
     db_object = Cache()
-    db_object.file_name = file_name
+    db_object.file_name = pathlib.Path(file_name).stem + "." + extension
     db_object.mime_type = extension
     db_object.is_doc_type = False
     with open(file_to_save, 'rb') as fd:

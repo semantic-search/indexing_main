@@ -84,8 +84,8 @@ MONGO_USER=
 MONGO_PASSWORD=
 CONNECTION_STRING=
 BLOB_STORAGE_CONTAINER_NAME=
-UNOCONV_SERVER =
-STORAGE_PROVIDER = 
+UNOCONV_SERVER=
+STORAGE_PROVIDER= 
 DASHBOARD_API_URL_UPDATE_STATE=
 DASHBOARD_API_URL_REMOVE_FILE=
 DASHBOARD_API_CLIENT_ID=
@@ -103,5 +103,5 @@ python main.py config.yaml
 
 - You can add your preferred service provider by creating 
 a simple elif condition to download a file in `task_utils/download_file_from_storage.py` 
-- Don't Forget to add the Variable `STORAGE_PROVIDER =`
+- Don't Forget to add the Variable `STORAGE_PROVIDER=`
 in .env 

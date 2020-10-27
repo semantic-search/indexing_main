@@ -32,9 +32,16 @@ if __name__ == '__main__':
                 payload["last_file"] = "last_doc_image"
                 payload["value"] = file
                 """api call to dashboard api"""
-                response = requests.request("POST", globals.DASHBOARD_URL,  data=payload)
+                try:
+                    requests.request("POST", globals.DASHBOARD_API_URL_UPDATE_LAST_FILE,  data=payload)
+                except Exception as e:
+                    init.send_log_msg(msg=str(e) + " EXCEPTION IN LAST_IMAGE_FILE_API_CALL__", error=True)
             elif group == "video" or group == "audio":
                 payload["last_file"] = "last_audio"
                 payload["value"] = file
                 """api call to dashbaord api"""
+                try:
+                    requests.request("POST", globals.DASHBOARD_API_URL_UPDATE_LAST_FILE,  data=payload)
+                except Exception as e:
+                    init.send_log_msg(msg=str(e) + " EXCEPTION IN LAST_AUDIO_FILE_API_CALL__", error=True)
             main.delay(blob.name, group_array)
