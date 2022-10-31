@@ -53,16 +53,3 @@ class FileCheck:
                 return True
             else:
                 return False
-
-
-    def check_video_audio(self, file):
-        video_data = subprocess.check_output(["ffprobe", "-i", file, "-show_streams",
-                                              "-select_streams", "a", "-loglevel", "error"])
-        video_data = video_data.decode("utf8")
-
-        if len(video_data) == 0:
-            """No audio"""
-            return False
-        else:
-            """Audio"""
-            return True
