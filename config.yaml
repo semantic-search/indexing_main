@@ -1,0 +1,39 @@
+Image:
+  Image_Captioning:
+  - DENSE_CAP
+  - IMAGE_CAPTIONING
+  - SELF_CRITICAL_PYTORCH
+  - NEURAL_TALK_2
+  - IM2TXT
+  Ocr:
+  - KERAS_TESSER_OCR
+  - EASY_OCR
+  Object_Detection:
+  - PP_YOLO
+  - YOLO_V4
+  - YOLO_V4_VOC
+  - MASK_RCNN_SENET
+  - OPEN_IMAGES_MODEL
+  - COCO_MODEL
+  - RETINA_NET_MODEL
+  Scene_Recognition:
+  - PLACES_365_TORCH
+  - PLACES_365_KERAS_HYBRID
+  - PLACES_365_KERAS_BASE
+  - IBM_MAX_SCENE_CLASSIFIER
+  Image_Recognition:
+  - IMAGE_NET_KERAS_MODELS
+  - TENCENT_ML_IMAGES_MODEL
+  Image_Search:
+  - XCEPTION_MODEL
+  Face_Recognition:
+  - FACE_RECOG
+Audio:
+  Sound_Classification:
+  - MAX_AUDIO_CLASSIFIER
+  Audio_Fingerprinting:
+  - DEJAVU
+  Speech_To_Text:
+  - JASPER
+  - QUARTZNET
+  - DEEP_SPEECH
