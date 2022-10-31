@@ -34,7 +34,14 @@ def main(file, group_array, api_mode=False):
             if extension == "pdf":
                 check_if_encrypt = init.file_check_obj.check_pdf_encrypted(file_to_index)
                 if check_if_encrypt:
-                    remove_api(file, "last_doc_image")
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    (file, "last_doc_image")
                     init.send_log_msg("ENCRYPTED PDF " + file + " of type last_doc_image")
                     shutil.rmtree(new_directory)
                 else:
@@ -117,15 +124,6 @@ def main(file, group_array, api_mode=False):
                 shutil.rmtree(new_directory)
                 image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
                                                    extension="png",
-                                                   file_name=file,
-                                                   group=group
-                                                   )
-        elif group == "video":
-            if init.file_check_obj.check_video_audio(file_to_index):
-                target_file = init.file_convert_obj.convert_video(source_format=extension, file=file_to_index)
-                shutil.rmtree(new_directory)
-                image_audio_to_db_and_add_to_kafka(file_to_save=target_file,
-                                                   extension="wav",
                                                    file_name=file,
                                                    group=group
                                                    )
