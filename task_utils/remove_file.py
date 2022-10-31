@@ -9,6 +9,8 @@ def remove_api(file, last_file):
         'value': file,
         'client_id': DASHBOARD_API_CLIENT_ID
     }
+    try:
+        requests.request("POST", DASHBOARD_API_URL_REMOVE_FILE, data=payload)
 
-    requests.request("POST", DASHBOARD_API_URL_REMOVE_FILE, data=payload)
-    init.send_log_msg(msg=str(e) + " EXCEPTION IN REMOVE FILE API CALL__", error=True)
+    except Exception as e:
+        init.send_log_msg(msg=str(e) + " EXCEPTION IN REMOVE FILE API CALL__", error=True)
