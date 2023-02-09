@@ -185,7 +185,6 @@ a simple elif condition to download a file in `task_utils/download_file_from_sto
 - Don't Forget to add the Variable `STORAGE_PROVIDER=`
 in .env 
 
-
 ---
 output:
   md_document:
