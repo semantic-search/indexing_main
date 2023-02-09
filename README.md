@@ -184,3 +184,13 @@ python main.py config.yaml
 a simple elif condition to download a file in `task_utils/download_file_from_storage.py` 
 - Don't Forget to add the Variable `STORAGE_PROVIDER=`
 in .env 
+
+
+---
+output:
+  md_document:
+    variant: markdown_github
+bibliography: bibliography.bib
+---
+
+[@10.1007/978-981-19-0898-9_8]
