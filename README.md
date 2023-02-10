@@ -185,11 +185,22 @@ a simple elif condition to download a file in `task_utils/download_file_from_sto
 - Don't Forget to add the Variable `STORAGE_PROVIDER=`
 in .env 
 
----
-output:
-  md_document:
-    variant: markdown_github
-bibliography: bibliography.bib
----
-
-[@10.1007/978-981-19-0898-9_8]
+## Citation
+```BibTeX
+@InProceedings{10.1007/978-981-19-0898-9_8,
+author="Gosaliya, Jainal S.
+and Gupta, Adarsh K.
+and Ashok, Akshay
+and Parikh, Swapnil M.",
+editor="Pandian, A. Pasumpon
+and Fernando, Xavier
+and Haoxiang, Wang",
+title="Architectural Insight of Neural Information Extraction, Retrieval, and Processing for Multimodal Neural Search",
+booktitle="Computer Networks, Big Data and IoT",
+year="2022",
+publisher="Springer Nature Singapore",
+address="Singapore",
+pages="93--110",
+abstract="In the growing world of digitization, digital media is engendered in abundance. With the ascension of the utilization of the Internet, there has been a prodigious increase in the engendering of digital content which includes images, audio, video, and documents such as pdf and text data. Information is free and more accessible than in any other era of humanity. Due to such a cognizance explosion, there is a vigorous need to make it more accessible. This can be achieved with semantic search. The quandary of processing, indexing, and storing such content has grown exponentially. At the same time, the infrastructure to handle such length has to be efficient and scalable. The current scenario of erudition explosion resulted in sizably voluminous data having a high performant scalable and resilient architecture which can parallelly process this multimodal binary file, can be gamely transmuting, and is becoming a requirement of the future. Different from the subsisting approaches that design handcrafted and task-concrete architectures for neural search to address only a single task, our architecture is tuned to handle multimodality which fundamentally denotes those data types (modalities) that can be audio, video, documents, images. This paper discusses the solution available to make digital content more accessible which is engendered as a result of the cognizance explosion. The proposed architecture will explore the domains of information extraction from this digital media securely and efficiently with various deep learning approaches for some categorical use cases.",
+isbn="978-981-19-0898-9"
+}
